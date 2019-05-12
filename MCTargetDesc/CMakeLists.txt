@@ -1,0 +1,10 @@
+add_llvm_library(LLVMSampleCGDesc
+  SampleCGABIInfo.cpp
+  SampleCGMCTargetDesc.cpp
+  SampleCGMCAsmInfo.cpp
+  SampleCGAsmBackend.cpp
+  SampleCGMCCodeEmitter.cpp
+  SampleCGMCExpr.cpp
+  SampleCGELFObjectWriter.cpp
+  SampleCGTargetStreamer.cpp
+  )
