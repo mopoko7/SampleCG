@@ -29,6 +29,7 @@ def IIHiLo : InstrItinClass;
 def IIImul : InstrItinClass;
 def IIIdiv : InstrItinClass;
 
+
 //===----------------------------------------------------------------------===//
 // SampleCG Generic instruction itineraries.
 //===----------------------------------------------------------------------===//
@@ -43,7 +44,7 @@ def SampleCGGenericItineraries : ProcessorItineraries<[ALU, IMULDIV], [], [
   InstrItinData<IIBranch           , [InstrStage<1,  [ALU]>]>,
   InstrItinData<IIHiLo             , [InstrStage<1,  [IMULDIV]>]>,
   InstrItinData<IIImul             , [InstrStage<17, [IMULDIV]>]>,
-  InstrItinData<IIIdiv             , [InstrStage<38, [IMULDIV]>]>
+  InstrItinData<IIIdiv             , [InstrStage<1, [IMULDIV]>]>
 ]>;
 
 def SampleCGSchedModel : SchedMachineModel {
@@ -70,3 +71,12 @@ def SampleCGSchedModel : SchedMachineModel {
   // Max micro-ops that can be buffered. [default = -1]
   let MicroOpBufferSize = 0;
 }
+
+let SchedModel = SampleCGSchedModel in {
+
+def GenericIssueDIV : ProcResource<1> { }
+def ALUDIV : SchedWriteRes<[GenericIssueDIV]> { let Latency = 15; }
+def : ItinRW<[ALUDIV], [IIIdiv]>;
+
+}
+
